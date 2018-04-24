@@ -11,7 +11,7 @@ load("aula-02/data/dados_exercicio.RData")
 ## Dica 2: Na primeira aula vimos uma função do RStudio que permite visualizar o conteúdo de uma variável, mas neste caso 
 ##         quero ver uma saída na Console.
 ### # ####
-
+str(acessos_alunos)
 
 
 ### 2 ###
@@ -20,6 +20,7 @@ load("aula-02/data/dados_exercicio.RData")
 ## Dica: Vimos um exemplo no mesmo material sobre estruturas de dados
 ### # ###
 
+length(acessos_alunos)
 
 
 ### 3 ###
@@ -31,6 +32,9 @@ load("aula-02/data/dados_exercicio.RData")
 ## Dica 2: Vimos exemplos disto nos materiais dos tipos numéricos e das estruturas de dados.
 ### # ###
 
+for (acessos_alunos in 2){
+  print(paste("O aluno", acessos_alunos, "realizou N acessos."))
+}
 
 
 ### 4 ###
