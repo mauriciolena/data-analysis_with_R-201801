@@ -32,9 +32,9 @@ length(acessos_alunos)
 ## Dica 2: Vimos exemplos disto nos materiais dos tipos numéricos e das estruturas de dados.
 ### # ###
 
-for (acessos_alunos in 2){
-  print(paste("O aluno", acessos_alunos, "realizou N acessos."))
-}
+print(paste("O aluno alu201830282 realizou " , acessos_alunos["alu201830282"] , " acessos."))
+
+
 
 
 ### 4 ###
@@ -47,14 +47,17 @@ acessos <- unlist(acessos_alunos)
 ## 2. Com uma operação de indexação, crie um outro vetor contendo somente os valores maiores
 ## 3. Determine o tamanho do vetor da operação 2, imprimindo o resultado na Console
 ### # ###
+str(acessos)
 
-
+x <- acessos > acessos_alunos$alu201830282
+y <- acessos[x]
+paste("alu com + acessos: ", length(y))
 
 ### 5 ###
 ## Combine todas as etapas acima em uma única chamada, sem a criação dos vetores auxiliares
 ### # ###
 
-
+length(acessos > acessos_alunos["alu201830282"])
 
 ### 6 ###
 ## Agora determine quantos colegas fizeram menos acessos que você. 
@@ -63,7 +66,7 @@ acessos <- unlist(acessos_alunos)
 ## Dica: Lembre que falamos sobre como o R faz conversões implícitas entre o tipo lógico e tipos numéricos
 ### # ###
 
-
+sum(acessos_alunos < acessos_alunos$alu201830282)
 
 ### 7 ###
 ## Supondo que eu quero atribuir uma nota de participação baseada na quantidade de acessos, com a seguinte definição:
@@ -76,6 +79,10 @@ acessos <- unlist(acessos_alunos)
 ## OBSERVAÇÃO :: Não avaliarei participação na forma do enunciado deste exercício. 
 ### # ###
 
+notas <- acessos
+notas[which(notas < 1)] <- 0
+notas[which(notas > 0 &  notas <  10)] <- 1
+notas[which(notas > 9)] <- 2
 
 
 ### 8 ###
@@ -94,6 +101,22 @@ acessos_alunos_e_guest$guest <- NA
 ## Repita as atividades 4, 5, 6, e 7 utilizando o acessos_com_guest no lugar da lista acessos_alunos.
 ## Tome o devido cuidado de sempre criar variáveis com nomes diferentes das já utilizadas! 
 
+acessos_alunos_guest <- acessos_alunos
+acessos_alunos_guest$guest <- NA
+guest <- unlist(acessos_alunos_guest)
+comparacao <- guest[guest != acessos_alunos["alu201830282"]] 
+comparacao
+maior <- guest[guest > acessos_alunos["alu201830282"]] 
+maior
+length(maior)
+length(guest[guest > acessos_alunos["alu201830282"]])
+menor <- guest[guest < acessos_alunos["alu201830282"]] 
+sum(menor < acessos_alunos["alu201830282"] )
+notag <- guest
+notag[which(notag == 0)] <- NA # row numbers
+notag[which(notag > 0 & notag < 10)] <- 1
+notag[which(notag >= 10)] <- 2
+notag
 
 
 ### 10 ###
@@ -101,12 +124,14 @@ acessos_alunos_e_guest$guest <- NA
 
 
 # 1. Houve modificação no número de alunos com mais e com menos acessos que você?
-
+# Sim, houve alteração.
 # 2. Como você conclui que o R trata comparações (operações relacionais) entre valores numéricos e NA?
-
-# 3. Qual o resultado do uso da função sum na presença de NA? O que você conclui sobre a operação de soma de todos os valores de
-#    um vetor na presença de NA?
-
+# O R se tras resultato tanto para valores numéricos quanto pra NA
+# 3. Qual o resultado do uso da função sum na presença de NA? Trará o NA no resultado
+#  O que você conclui sobre a operação de soma de todos os valores de um vetor na presença de NA? O valor NA será retornado
+#
 # 4. Execute o comando abaixo para ler a documentação da função sum e veja se há como modificar a chamada da função sum na presença
 #    de NAs. Teste os exemplos da página de help da função sum.
 help(sum)
+
+
