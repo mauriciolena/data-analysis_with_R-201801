@@ -5,6 +5,7 @@ library(tidyverse)
 
 salarios <- read_csv("aula-03/data/201802_dados_salarios_servidores.csv.gz")
 
+
 ### 1 ####
 ## 
 ## O arquivo possui 2 colunas de Remuneração, uma em Reais e outra em Dólares. 
@@ -13,6 +14,17 @@ salarios <- read_csv("aula-03/data/201802_dados_salarios_servidores.csv.gz")
 ## Após criar esta coluna, descarte todos os registros cuja Remuneração Final for menor que R$ 900,00
 ## 
 ### # ####
+
+dolar <- 3.2443  # cotação dia 28/02/2018- compra
+# head(salarios, 20)
+
+salarios %>%
+  mutate(remuneracao_final = REMUNERACAO_REAIS + (REMUNERACAO_DOLARES * dolar)) -> subset_remuneracao_final
+
+
+subset_remuneracao_final %>%
+  filter(remuneracao_final > 900)
+
 
 
 ### 2 ####
