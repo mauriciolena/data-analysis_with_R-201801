@@ -69,8 +69,7 @@ salarios %>% filter(DESCRICAO_CARGO %in% c("MINISTRO DE PRIMEIRA CLASSE", "ANALI
 ### # ####
 
 salarios %>%
-  mutate(max = max(salarios$REMUNERACAO_REAIS)) %>%
-  mutate(min =  min(salarios$REMUNERACAO_REAIS)) %>%
+
   mutate(orgao = if_else(ORGSUP_EXERCICIO != ORGSUP_LOTACAO,"Orgão diferente", "Orgão igual")) %>%
   group_by(DESCRICAO_CARGO, orgao) %>%
   filter(DESCRICAO_CARGO %in%  c(cargos_diferente_lotacao%>% pull(DESCRICAO_CARGO))) %>%
