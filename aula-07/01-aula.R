@@ -73,7 +73,7 @@ set.seed(201806)
 
 (bern <- 
   data_frame(Pessoas = 10 ^ x) %>%
-  mutate( Destros = map_int(Pessoas, ~ sum(rbernoulli(.x, p = 0.9))) ) %>%
+  mutate( Destros = map_int(Pessoas, ~ sum(rbernoulli(.x, p = 0. 9))) ) %>%
   mutate( Canhotos = Pessoas - Destros))
 
 #' 
@@ -270,6 +270,32 @@ pgeom(6, prob=0.1, lower.tail = TRUE)
 #'     
 #'     + Você observou que, das últimas 500 _tentativas_ de publicação de reclamações, 340 acertaram a validação de CAPTCHA. Qual a probabilidade de uma quantidade entre 320 e 350 tentativas passarem pela validação de CAPTCHA a cada 500 tentativas? Dada a probabilidade de 70% de sucesso, qual o número esperado de publicações a cada 500 CAPTCHAS? DICA: ESTAMOS TRATANDO DA DISTRIBUIÇÃO BINOMIAL.
 #' 
+
+set.seed(30282)
+
+# Gera uma sequência de 500 eventos de ligações
+call_phone <- rbernoulli(500)
+
+# Conta a quantidade de caras em sequência e de coroas em sequência
+seq_call_phone <- rle(call_phone)
+
+# Quais as sequências de ligações?
+seq_call_phone$lengths[!seq_call_phone$values]
+
+#Quantas vezes o numero 6 ocorreu?
+length(which(seq_call_phone$lengths[!seq_call_phone$values] == 6))
+
+
+#---------------------------------------------------------------------------------------
+
+df_geom_probs <- data_frame(x = 0:20, y=pgeom(0:20, prob = 0.1) * 100)
+
+ggplot(df_geom_probs, aes(x=x, y=y)) +
+  geom_col() +
+  scale_x_continuous(name = "Tentativas até ser atendido", breaks=0:10) +
+  scale_y_continuous(name = "Probabilidade (%)", breaks=seq(from=0, to=50, by=5)) +
+  theme_light()
+
 #' >> FIM ATIVIDADE
 #' 
 #' ### Variáveis aleatórias contínuas
