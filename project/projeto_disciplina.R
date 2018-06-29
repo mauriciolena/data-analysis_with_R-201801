@@ -85,10 +85,11 @@ Filter_ordends %>% View()
 # insta_orders    
 # insta_products  
 
-insta_products %>%
-  inner_join(products, by = 'product_id') %>%
-  inner_join(top_dez_ordenado, by = c('aisle_id', 'department_id')) %>%
-  inner_join(insta_orders, by = 'order_id') %>%
+top_dez_ordenado %>%
+  inner_join(products, by = "product_id") %>%
+  inner_join(aisles, by = c("aisle_id.x" = "aisle_id")) %>%
+  inner_join(departments, by = c("department_id.x" = "department_id")) %>%
+  inner_join(insta_orders, by = "order_id") %>%
   select(order_id,
          user_id,
          order_number,
@@ -96,10 +97,10 @@ insta_products %>%
          order_hour_of_day,
          days_since_prior_order,
          product_id,
-         product_name,
-         aisle_id,
+         product_name.x,
+         aisle_id.x,
          aisle,
-         department_id,
+         department_id.x,
          department) %>%
   mutate(user_id = factor(user_id),
          department = factor(department),
