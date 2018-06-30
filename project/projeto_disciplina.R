@@ -1,7 +1,6 @@
 # Descrição dos dados: https://tech.instacart.com/3-million-instacart-orders-open-sourced-d40d29ead6f2
 # Estamos trabalhando com somente uma amostra do total de pedidos. O dataset abaixo não possui 3 milhões de pedidos ;)
 
-install.packages("tidyverse")
 
 library(tidyverse)
 library(dplyr)
@@ -105,12 +104,22 @@ top_dez_ordenado %>%
   mutate(user_id = factor(user_id),
          department = factor(department),
          aisle = factor(aisle),
-         order_hour_of_day = ordered(order_hour_of_day)) -> top10_insta_orders
+         order_hour_of_day = ordered(order_hour_of_day)) -> dfGeral
 
-summary(top10_insta_orders)
+summary(dfGeral)
 
 
 #7 # Identifique os 5 horários com maior quantidade de usuários que fizeram pedidos
+
+dfGeral %>%
+  distinct(order_hour_of_day, user_id) %>%
+  group_by(order_hour_of_day) %>%
+  summarise(qty = n()) %>%
+  ungroup() %>%
+  arrange(desc(qty)) %>%
+  head(5) %>%
+  pull(order_hour_of_day) -> Top_5_horarios
+
 
 
 #8 # Quais os 15 produtos mais vendidos nestes 5 horários? Identifique os produtos e a quantidade total nestes horários (total geral, não por hora)
