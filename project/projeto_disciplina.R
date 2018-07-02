@@ -4,6 +4,7 @@
 
 library(tidyverse)
 library(dplyr)
+library(ggplot2)
 
 
 departments <- read_csv("project/departments.csv")                   # Cadastro de Departamentos
@@ -130,7 +131,7 @@ Top_5_horarios %>%
   group_by(order_hour_of_day) %>%
   count(product_id) %>%
   arrange(desc(n)) %>%
-  head(15) -> Top_15_produtos
+  head(15) -> Top_15_horarios
 
 
 #9 # Calcule a média de vendas por hora destes 15 produtos ao longo do dia,
@@ -138,7 +139,8 @@ Top_5_horarios %>%
 # Utilize o nome do produto para legenda da cor da linha.
 # Você consegue identificar algum produto com padrão de venda diferente dos demais? 
 
-Top_15_horarios%>%
+
+Top_15_horarios %>%
   inner_join(products, by = 'product_id') %>%
   inner_join(insta_products, by = 'product_id') %>%
   inner_join(insta_orders, by = 'order_id') %>%
@@ -260,7 +262,7 @@ dfGeral %>%
   group_by(user_id) %>%
   summarise(total = mean(days_since_prior_order)) %>%
   ggplot(aes(x = total)) +
-  geom_bar(fill = "blue", color = "blue", alpha = 0.6) +
+  geom_bar(fill = "gray", color = "gray", alpha = 0.6) +
   scale_x_continuous(breaks = 0:30)
 # o padrão visualmente se mantém o mesmo.
 
@@ -306,8 +308,31 @@ products %>%
 # e pontos na intersecção dos eixos, onde o tamanho do ponto é determinado pela quantidade média de pedidos de banana 
 # nesta combinação de dia da semana com hora
 
+products %>%
+  filter(product_id %in% top_banana) %>%
+  inner_join(insta_products, by = "product_id") %>%
+  inner_join(insta_orders, by = "order_id") %>%
+  distinct(order_dow, order_hour_of_day, order_id) %>%
+  ggplot(aes(x = order_dow, y = order_hour_of_day, color = ..n..)) +
+  geom_count()
 
 #21 # Faça um histograma da quantidade média calculada na atividade 19, facetado por dia da semana
+
+
+products %>%
+  filter(product_id %in% top_banana) %>%
+  inner_join(insta_products, by = "product_id") %>%
+  inner_join(insta_orders, by = "order_id") %>%
+  distinct(order_dow, order_hour_of_day, order_id) %>%
+  mutate(qty = 1) %>%
+  group_by(order_dow, order_hour_of_day) %>%
+  summarise(orders_mean = mean(sum(qty))) %>%
+  ungroup() %>%
+  ggplot(aes(x = orders_mean)) +
+  scale_x_continuous(breaks = seq(from = 0, to = 850, by = 50)) +
+  scale_y_continuous(breaks = seq(from = 0, to = 20, by = 1)) +
+  geom_histogram(breaks = seq(from = 0, to = 850, by = 5)) +
+  facet_wrap(~order_dow, ncol = 2)
 
 
 #22 # Teste se há diferença nas vendas por hora entre os dias 3 e 4 usando o teste de wilcoxon e utilizando a simulação da aula de testes
